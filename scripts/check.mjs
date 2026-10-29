@@ -32,7 +32,11 @@ spawnSync(
     `--outputFile=${output}`,
     ...paths,
   ],
-  { stdio: ["ignore", "ignore", "inherit"] },
+  // On Windows, npx is npx.cmd, which can only be started through a shell.
+  {
+    stdio: ["ignore", "ignore", "inherit"],
+    shell: process.platform === "win32",
+  },
 );
 if (!existsSync(output)) {
   console.error(
